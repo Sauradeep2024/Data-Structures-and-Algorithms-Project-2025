@@ -1,10 +1,5 @@
-# DSA2025_birds
+## Data Structures and Algorithms 2025 Semester Project
 
-## Data Structures and Algorithms
-
-*We will build the most beautiful app you have ever seen – watch and see!*
-
----
 
 # VHS Course Matcher
 
