@@ -208,12 +208,67 @@ Developed for the **DSA 2025** course by **Team Birds**
 - Matheus Galiza  
 - Oliver Pollex  
 - Padmavathi Reddy  
-- Sauradeep Bhattacharyya  
+- Sauradeep Bhattacharyya (see bwlow)
+  
+**Individual Write-up – Sauradeep Bhattacharyya**
+  
+For our DSA 2025 project, I was primarily responsible for the algorithm implementation and the
+backend integration of the VHS Course Finder application. When we started, we had very limited
+context on how algorithms are applied in real-world projects—especially in programming—and how
+they differ from more generic deterministic methods. Initially, our approach leaned heavily toward
+simple string matching. However, through discussions with our lab instructor and you, we began to
+explore a more ambitious framing of the problem.
+
+Instead of just finding course matches through keyword comparison, we reimagined the task as a
+ranking problem. We realized that there were two distinct but related preferences at play: one from
+the user (what they want, their budget, etc.), and one from the platform (which courses need to be
+filled, where gender balance is skewed, etc.). To bridge these, I proposed using the Kemeny-Young
+rank aggregation algorithm, which uses integer linear programming (ILP) to generate a
+consensus ranking by minimizing pairwise disagreements between two rankings. This formed the core
+algorithm of our app.
+
+*Key Contributions*
+
+**1. Kemeny-Young ILP Formulation**
+I was responsible for translating this mathematical model into code—writing out the binary
+decision variables, antisymmetry and transitivity constraints, and setting up the objective
+function that minimizes disagreement. To ensure it remained solvable, I capped the rankings
+at 20 entries. I felt this was a strong demonstration of how a theoretical algorithm could
+power a real product.
+
+**2. String Matching Logic**
+Since the dataset was in German, I implemented a preprocessing step that combined
+langdetect and deep-translator to handle multilingual queries. I realized that for optimal string
+matching, we needed a split approach: token_set_ratio worked best for one-word queries,
+while partial_ratio performed better on multi-word input. I modified our matcher
+accordingly, making the match logic dynamic depending on the structure of the input.
+
+**3. Platform-Side Ranking**
+The platform had its own goals: prioritize under-enrolled courses, ensure a gender balance,
+and boost sponsored offerings. I designed a ranking logic that reflected this. First, courses
+were ranked based on numeric variables like occupancy and participant minimums. Then, I
+applied a “ranking boost” based on binary categorical indicators (sponsorship, matching user
+target groups). The boost was scaled using inter-rank dispersion, so that it meaningfully
+shifted course positions.
+
+**4. Initial Flask Integration**
+While my teammates worked on refining the interface, I was responsible for setting up the
+initial Flask app structure and doing the first level of integration. This included organizing
+the codebase into reusable modules, setting up the route logic, and connecting it to
+placeholder HTML pages. Coming into this project with almost no experience in Python or
+Flask, I was genuinely proud to have debugged issues and made the whole pipeline—from
+form submission to ranked course display—work as a coherent app.
+
+**What Could Be Improved**
+
+If I had more time, the next big improvement I’d push for would be
+integrating a hosted database with user registration. That would allow us to save user preferences,
+record course interest, and feed that data back into our ranking system. It would also let us update
+courses in real-time, show trending courses, or even notify users when a class they're interested in is
+about to fill. While our current version shows a successful use case of a 3rd party webapp that
+integrates open source VHS course data to generate an English interface for users of all backgrounds
+to interact and access these courses, further integration was slightly out of reach given our timelines
+and our team's early-stage experience with backend systems.
 
 ---
 
-## Future improvements
-- Add user registration and login backed by a database  
-  - Real‑time update of course occupancies when users enrol  
-  - Persist user preferences and history for improved recommendations
-- Enhance UI accessibility and visual polish
